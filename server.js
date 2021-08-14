@@ -1,14 +1,15 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import mongoose from "mongoose";
 import Cors from "cors";
-
 import Cards from "./dbCards.js";
 
 // App Config
 const app = express();
 const port = process.env.PORT || 8001;
-const connection_url =
-  "mongodb+srv://admin:LXtrxnh38u3MKWX@cluster0.eovit.mongodb.net/tinderdb?retryWrites=true&w=majority";
+const connection_url = process.env.DB_URL;
 
 // Middleware
 app.use(express.json());
@@ -22,7 +23,13 @@ mongoose.connect(connection_url, {
 });
 
 // API Endpoints
-app.get("/", (req, res) => res.status(200).send("Hello World!!!"));
+app.get("/", (req, res) =>
+  res
+    .status(200)
+    .send(
+      process.env.NAME ? `Hello ${process.env.NAME}` : "Hello Twinkal Kumar Raj"
+    )
+);
 
 app.post("/tinder/cards", (req, res) => {
   const dbCard = req.body;
